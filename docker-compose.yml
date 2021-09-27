@@ -1,0 +1,30 @@
+version: '2.1'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: settings-pranay
+    ports:
+      - "5432:3306"
+
+  server:
+    build: target
+    environment:
+      DB_USER: postgres
+      DB_PWD: password
+      DB_HOST: db
+      DB_PORT: 3306
+      # Uncomment and fill out for tCell
+      #      TCELL_AGENT_APP_ID: <the tCell app id e.g. settingsservicestg01us-ahsbj>
+      #      SSM_NAMESPACE: <e.g. settings-service.stg01.us>
+      #      AWS_REGION: us-west-2
+      #      AWS_ACCESS_KEY_ID: <get this from ~/.aws/credentials>
+      #      AWS_SECRET_ACCESS_KEY: <get this from ~/.aws/credentials>
+      #      AWS_SESSION_TOKEN: <get this from ~/.aws/credentials>
+    ports:
+      - "8080:8080"
+    links:
+      - db
+    depends_on:
+      - db
